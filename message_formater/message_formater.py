@@ -20,12 +20,12 @@ def tratar_relato(texto: str) -> str:
 # 🌐 Endpoint
 @app.route("/tratar-relato", methods=["POST"])
 def tratar():
-    data = request.get_json()
+    texto = request.data.decode("utf-8")
 
-    if not data or "relato" not in data:
+    if not texto:
         return jsonify({"erro": "Campo 'relato' é obrigatório"}), 400
 
-    texto_tratado = tratar_relato(data["relato"])
+    texto_tratado = tratar_relato(texto)
 
     return jsonify({
         "relato_tratado": texto_tratado
