@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify # type: ignore
 import os
 from dotenv import load_dotenv
 
@@ -44,17 +44,19 @@ def validar_token():
 
 
 # 🌐 Endpoint
-@app.route("/tratar-relato/<texto>", methods=["POST"])
-def tratar(texto):
+@app.route("/tratar-relato", methods=["POST"])
+def tratar():
 
     if not validar_token():
         return jsonify({
             "erro": "Não autorizado"
         }), 401
 
+    texto = request.data.decode("utf-8")
+
     if not texto:
         return jsonify({
-            "erro": "Campo 'relato' é obrigatório"
+            "erro": "Texto vazio"
         }), 400
 
     texto_tratado = tratar_relato(texto)
